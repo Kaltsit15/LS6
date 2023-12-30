@@ -1,19 +1,23 @@
-class CartItemsController < ActionController
+class CartitemsController < ApplicationController
     def new
-        @cart_id = current_cart.id
-        @product_id = params[:product_id]
-        @cart_item = CartItem.new
+        @cartitem = Cartitem.new(product_id: params[:product_id])
     end
     
     def create
-        @cart_id = params[:cart_item][:cart_id]
-        @product_id = params[:cart_item][:product_id]
-        @qty = params[:cart_item][:qty]
-        c = CartItem.new(cart_id: @cart_id, product_id: @product_id, qty: @qty)
-        if c.save
-            redirect_to carts_show_path
-        else 
-            render "new"
+        @cartitem = Cartitem.new(product_id: params[:cartitem][:product_id], cart_id: current_cart.id,
+        qty: params[:cartitem][:qty])
+        if @cartitem.save
+            flash[:notice] = 'カートに商品を追加しました。'
+            redirect_to root_path
+        else
+            render new_cartitem_path
         end
     end
-end    
+    
+    def destroy
+        @cartitem = Cartitem.find(params[:id])
+        @cartitem.destroy
+        flash[:notice] = 'カートから商品を削除しました。'
+        render 'carts/show'
+    end
+end

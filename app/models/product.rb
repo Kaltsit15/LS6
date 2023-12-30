@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
-    has_one :cart_item
-    has_many :cart_item_carts, through: :cart_items, source: :cart
+    has_many :cartitems, dependent: :destroy
+    
+    validates :name, :price, presence: true
+    validates :price, numericality: {greater_than_or_equal_to: 0}
 end

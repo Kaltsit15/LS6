@@ -1,11 +1,15 @@
-<% @products.each do |e| %>
+<% if flash[:notice] %>
+    <%= flash[:notice] %>
+<% end %>
+
+<% @products.each do |product| %>
 <p>
-    <%= e.name %>
-    <%= e.price %>
-    <%= link_to '削除', product_path(e), data: { "turbo-method": :delete } %>
-    <%= link_to 'カートに入れる', cart_items_new_path(product_id: e.id) %>
+    <%= product.name%>
+    <%= product.price%>円
+    <%= link_to '削除', product_path(product) ,method: :delete %>
+    <%= link_to 'カートに追加', new_cartitem_path(product_id: product.id) %>
 </p>
 <% end %>
 
-<%=link_to '商品を追加する', new_product_path%>
-<%=link_to 'カート一覧', carts_show_path %>
+<%= link_to '商品を追加する', new_product_path %><br>
+<%= link_to 'カートを見る', cart_path(current_cart.id) %>

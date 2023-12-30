@@ -8,16 +8,17 @@ class ProductsController < ApplicationController
     end
     
     def create
-        @product = Product.new(name: params[:product][:name], price: params[:product][:price])
+        @product = Product.new(name: params[:product][:name],  price: params[:product][:price])
         if @product.save
             redirect_to root_path
         else
-            render 'new'
+            render new_product_path
         end
     end
     
     def destroy
-        Product.find(params[:id]).destroy
+        product = Product.find(params[:id])
+        product.destroy
         redirect_to root_path
     end
 end
